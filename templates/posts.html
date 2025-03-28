@@ -1,0 +1,40 @@
+<!-- Наследуем шаблон base.html для единообразия оформления. -->
+{% extends 'base.html' %}
+
+<!-- Определяем блок content, который будет заполнен уникальным содержимым для этой страницы. -->
+{% block content %}
+
+<!-- Заголовок страницы с постами. -->
+<h1 class="my-5">Последние посты</h1>
+
+<!-- Контейнер для размещения карточек постов. -->
+<div class="row mb-3">
+    {% for post in posts %}
+        <div class="col-md-6 d-flex">
+            <div class="card mb-4">
+                <!-- Изображение поста. -->
+                <img class="card-img-top" src="{{ url_for('static', filename='images/' + post.image_id) }}" alt="Card image cap">
+                <div class="card-body">
+                    <!-- Заголовок поста. -->
+                    <h2 class="card-title">{{ post.title }}</h2>
+
+                    <!-- Краткий текст поста. -->
+                    <p class="card-text">
+                        {{ post.text | truncate(100) }}
+                    </p>
+
+                    <!-- Ссылка для перехода к полному тексту поста. -->
+                    <a href="{{ url_for('post', index=loop.index0) }}" class="btn btn-primary">Читать дальше &rarr;</a>
+                </div>
+
+                <!-- Подвал карточки с информацией о дате публикации и авторе. -->
+                <div class="card-footer text-muted">
+                    Опубликовано {{ post.date.strftime('%d.%m.%Y') }}. Автор: {{ post.author }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Завершаем блок content. -->
+{% endblock %}
